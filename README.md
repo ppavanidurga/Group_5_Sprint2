@@ -33,7 +33,7 @@ Download zip or use link https://github.com/ppavanidurga/Group_5_Sprint2/tree/ma
 git clone https://github.com/ppavanidurga/Group_5_Sprint2/tree/master.git
 
 # AUTHORS
-K VARADHARAJ KAMATH
+K VARADARAJ KAMATH
 
 ALA PRANATHI
 
