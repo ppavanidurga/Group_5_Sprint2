@@ -28,7 +28,7 @@ LINUX (Recomended Ubuntu 16.04 or later)
 
 ./food
 
-Download zip or use link ttps://github.com/ppavanidurga/Group_5_Sprint2/tree/master or use git clone
+Download zip or use link https://github.com/ppavanidurga/Group_5_Sprint2/tree/master or use git clone
 
 git clone https://github.com/ppavanidurga/Group_5_Sprint2/tree/master.git
 
