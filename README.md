@@ -4,10 +4,10 @@
 In this c++ project we have implemented food DeliveryManagement System With TCP Socket(Customer Support). It used for ordering food in a better way. It has different modes so that it can be used at different places.
 We are done with makefile. Food delivery system allows users to choose their favourite restaurant and dishes from the available locations. The admin can add, delete and update items from the restaurant.
 # PREQUESTIES
-LINUX
-Logger
-C++
-For getting knowlege about our project structure and details see Documents folder in the repo.
+LINUX,
+Logger,
+C++,
+For getting knowlege about our project structure and details see "Documents" folder in the repo.
 
 # MODES SUPPORTED
 
@@ -32,7 +32,7 @@ Download zip or use
 
 git clone https://github.com/ppavanidurga/Group_5_Sprint2/tree/master.git
 
-#AUTHORS
+# AUTHORS
 K VARADHARAJ KAMATH
 
 ALA PRANATHI
