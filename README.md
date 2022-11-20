@@ -25,4 +25,22 @@ This is a option to exit the application.
 
 # COMPILE AND RUN
 LINUX (Recomended Ubuntu 16.04 or later)
+
 ./food
+
+Download zip or use
+
+git clone https://github.com/ppavanidurga/Group_5_Sprint2/tree/master.git
+
+#AUTHORS
+K VARADHARAJ KAMATH
+
+ALA PRANATHI
+
+GUDUDPU SIVA SAI LAKSHMI
+
+PAVANIDURGA PASUPULETI
+
+LAKSHMIDURGA POTTHURU
+
+
