@@ -15,7 +15,7 @@ Menu::Menu()
 {
 	ifstream infile;
 	infile.open("menu.txt");
-	int itemindex=0;
+	int itemindex=ZERO;
 	while(!infile.eof())
 	{
 	    MenuItem menuItem;
@@ -32,8 +32,15 @@ Menu::Menu()
 void Menu::AddItemToCart()
 {
 	int index;
-	info("Enter Menu Item Number\n");
-	cin>>index;
+	info("\nEnter Menu Item Number: ");
+	//cin>>index;
+	while(!(cin>>index)){
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                error("\nEnter Valid Option\n");
+		info("\nEnter Menu Item Number: ");
+                }
+
 	index--;
 	if(index>=ItemsCount)
 	
@@ -44,67 +51,81 @@ void Menu::AddItemToCart()
 	CartItem cartItem;
 	cartItem.Name=items[index].Name;
 	cartItem.Price=items[index].Price;
-	info("Enter Quantity of Your Item :");
-	cout<<cartItem.Name<<endl;
-	cin>>cartItem.Qty;
+	info("\nEnter Quantity of Your Item: ");
+	//cout<<cartItem.Name<<endl;
+	while(!(cin>>cartItem.Qty)){
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                error("\nEnter Valid Option\n");
+		info("\nEnter Quantity of Your Item: ");
+                }
+
+	//cin>>cartItem.Qty;
 	cartItems[cartItemsCount]=cartItem;
 	cartItemsCount++; 
-	notice("Item Ordered Successfully\n");
+	notice("\nItem Ordered Successfully\n");
 
 }
 void Menu::DeleteItemToCart()
 {
         int index;
-        info("Enter Your Cart Item Number : ");
-        cin>>index;
+        info("\nEnter Your Cart Item Number: ");
+        //cin>>index;
+	while(!(cin>>index)){
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                error("\nEnter Valid Option\n");
+        	info("\nEnter Your Cart Item Number: ");
+                }
+
         index--;
         if(index>=cartItemsCount)
         {
-                error("Invalid Cart Item Number\n");
+                error("\nInvalid Cart Item Number\n");
                 return;
         }
-        for(int cartitemindex=index;cartitemindex<cartItemsCount-1;cartitemindex++)
-		cartItems[cartitemindex]=cartItems[cartitemindex+1];
+        for(int cartitemindex=index;cartitemindex<cartItemsCount-ONE;cartitemindex++)
+		cartItems[cartitemindex]=cartItems[cartitemindex+ONE];
         cartItemsCount--;
-        notice("Item removed Successfully\n");
+        notice("\nItem removed from cart\n");
 
 }
 
 void Menu::UserTransistion()
 {
-	int outoption=0;
+	int outoption=ZERO;
         while(true)
         {
-        notice("\nMenu Items\n");
-        int menuitemindex=0;
+        notice("\nMENU ITEMS\n");
+        int menuitemindex=ZERO;
         while(menuitemindex<ItemsCount)
         {
-                cout<<menuitemindex+1<<". "<<items[menuitemindex].Name<<"\t"<<items[menuitemindex].Price<<endl;
+                cout<<menuitemindex+ONE<<". "<<items[menuitemindex].Name<<"\t"<<items[menuitemindex].Price<<endl;
                 menuitemindex++;
         }
 
-	notice("Your ordered Items\n");
-	int cartitemindex=0;
-	int sum=0;
+	notice("\nYour ordered Items\n");
+	int cartitemindex=ZERO;
+	int sum=ZERO;
 	while(cartitemindex<cartItemsCount)
 	{
 		int total = cartItems[cartitemindex].Qty*cartItems[cartitemindex].Price;
-		cout<<cartitemindex+1<<". "<<cartItems[cartitemindex].Name<<"\t"<<cartItems[cartitemindex].Qty<<"* "<<cartItems[cartitemindex].Price<<"\t"<< total  <<endl;
+		cout<<cartitemindex+ONE<<". "<<cartItems[cartitemindex].Name<<"\t"<<cartItems[cartitemindex].Qty<<"* "<<cartItems[cartitemindex].Price<<"\t"<< total  <<endl;
                 cartitemindex++;
 		sum+=total;
 	}
-	if(sum>0)
+	if(sum>ZERO)
 	{
-		info("Total bill : ");
+		info("\nTotal bill : ");
 		cout<<sum<<endl;
 	}
         Menu:
         int option;
 	info("\n1. Search Item\n2. Order Item\n3. Delete Item from Cart\n4. Pay Bill\n5. Cancel\n");
-        while(cout << "Enter your choice: " && !(cin>>option)){
+        while(cout << "\nEnter your choice: " && !(cin>>option)){
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		error("Enter Valid Option\n");
+		error("\nEnter Valid Option\n");
 		
 	}
 	switch(option)
@@ -120,56 +141,53 @@ void Menu::UserTransistion()
                         break;
                 case 4:
                         //DeleteMenu();
-			outoption=3;
+			outoption=THREE;
                         break;
 		case 5:
-			outoption=4;
+			outoption=FOUR;
 			break;
                 default:
-			error("Enter Valid Option\n");
+			error("\nEnter Valid Option\n");
                         
                         break;
         }
 	
-	if(outoption==3 || outoption==4)
+	if(outoption==THREE || outoption==FOUR)
 		break;
         
 	}
 
-	if(outoption==3)
+	if(outoption==THREE)
 	{
 		while(true){
-		info("Please select payment option\n");
+		info("\nPlease select payment option:");
 		info("\n1. GPay 2. PhonePe 3. Cash On Delivery 4. Others (Credit /Debit card) 5. Customer Support\n");
 		int pmethod;
 		//cin>>pmethod;
-		while(cout << "Enter your choice: " && !(cin>>pmethod)){
+		while(cout << "\nEnter your choice: " && !(cin>>pmethod)){
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                error("Enter Valid Option\n");
+                error("\nEnter Valid Option\n");
 		}
-		if(pmethod == 5) {
+		if(pmethod == FIVE) {
 			Customer customer;
 			customer.customerSupport();
-			cout<<"Thanks Visit again"<<endl;
+			notice("Thank You Visit again\n");
 			exit(1);
 		}
 
-		if(pmethod>0 && pmethod<=4)
+		if(pmethod>ZERO && pmethod<=FOUR)
 		{
-			notice("Transaction successful");
+			notice("\nTransaction successful\n");
 			break;
 		}
 		else
-			error("Invalid Option try again");
+			error("\nInvalid Option try again\n");
 		
 		}
 
 
 	}
-
-	//notice("Thank You for choosing us");
-
 
 }
 
@@ -177,11 +195,18 @@ void Menu::UserTransistion()
 void Menu::AddMenu()
 {
 	MenuItem menuItem;
-	info("Add Menu Item\n");
-	info("Enter new Item Name\n");
+	info("\nAdd Menu Item\n");
+	info("Enter new Item Name: ");
 	cin>>menuItem.Name;
-	info("\nEnter Price");
-	cin>>menuItem.Price;
+	info("\nEnter Price: ");
+	//cin>>menuItem.Price;
+	while(!(cin>>menuItem.Price)){
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                error("\nEnter Valid Option\n");
+		info("\nEnter Price: ");
+                }
+
 	items[ItemsCount]=menuItem;
 	ItemsCount++;
 	ofstream outfile;
@@ -193,29 +218,36 @@ void Menu::AddMenu()
         outfile<<"\t";
         outfile<<"0";
         outfile.close();
-	notice("\nNew Item Added to Menu Successfully");
+	notice("\nNew Item Added to Menu Successfully\n");
 	
 }
 
 void Menu::DeleteMenu()
 {
 	int index;
-	info("Enter Menu Item Number to Delete : ");
-	cin>>index;
+	info("\nEnter Menu Item Number to Delete: ");
+	//cin>>index;
+	while(!(cin>>index)){
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                error("\nEnter Valid Option\n");
+		info("\nEnter Menu Item Number to Delete: ");
+                }
+
 	index--;
 	if(index>=ItemsCount)
 	{
-		error("Invalid Menu Item Number");
+		error("\nInvalid Menu Item Number\n");
 		return;
 	}
-	int menuitemindex=0;
-	for(menuitemindex=index;menuitemindex<ItemsCount-1;menuitemindex++)
+	int menuitemindex=ZERO;
+	for(menuitemindex=index;menuitemindex<ItemsCount-ONE;menuitemindex++)
 	{
-	   items[menuitemindex]=items[menuitemindex+1];
+	   items[menuitemindex]=items[menuitemindex+ONE];
 	}
 	ofstream outfile;
         outfile.open("menu.txt");
-        menuitemindex=0;
+        menuitemindex=ZERO;
 	ItemsCount--;
         while(menuitemindex<ItemsCount)
         {
@@ -234,26 +266,40 @@ void Menu::DeleteMenu()
 void Menu::UpdateMenu()
 {
         int index;
-        info("Enter Menu Item Number to Update : ");
-        cin>>index;
+        info("\nEnter Menu Item Number to Update : ");
+        while(!(cin>>index)){
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                error("\nEnter Valid Option\n");
+        	info("\nEnter Menu Item Number to Update : ");
+                }
+
+	//cin>>index;
         index--;
         if(index>=ItemsCount)
         {
-                error("Invalid Menu Item Number");
+                error("\nInvalid Menu Item Number\n");
                 return;
         }
-        int menuitemindex=0;
+        int menuitemindex=ZERO;
         
 	MenuItem item;
-	info("Enter Menu Item Name: ");
+	info("\nEnter Menu Item Name: ");
 	cin>>item.Name;
 	info("\nEnter Price: ");
-	cin>>item.Price;
+	//cin>>item.Price;
+	while(!(cin>>item.Price)){
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                error("\nEnter Valid Option\n");
+		info("\nEnter Price: ");
+                }
+
 	items[index]=item;
 
         ofstream outfile;
         outfile.open("menu.txt");
-        menuitemindex=0;
+        menuitemindex=ZERO;
         while(menuitemindex<ItemsCount)
         {
             outfile<<"\n";
@@ -272,21 +318,21 @@ void Menu::AdminTransistion()
 {
 	while(true)
 	{
-	info("Menu Items");
-	int menuitemindex=0;
+	notice("\nMENU ITEMS\n");
+	int menuitemindex=ZERO;
 	while(menuitemindex<ItemsCount)
 	{
-		cout<<menuitemindex+1<<". "<<items[menuitemindex].Name<<"\t"<<items[menuitemindex].Price<<endl;
+		cout<<menuitemindex+ONE<<". "<<items[menuitemindex].Name<<"\t"<<items[menuitemindex].Price<<endl;
 		menuitemindex++;
 	}
 	
 	int option;
 	info("\n1. Search Item in menu\n2. Add Item to menu\n3. Update Menu Item\n4. Delete Menu Item\n5. Exit\n");
 	//cin>>option;
-	 while(cout << "Enter your choice: " && !(cin>>option)){
+	 while(cout << "\nEnter your choice: " && !(cin>>option)){
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                error("Enter Valid Option\n");
+                error("\nEnter Valid Option\n");
 
         }
 
@@ -305,32 +351,29 @@ void Menu::AdminTransistion()
 			DeleteMenu();
 			break;
 		case 5:
-			notice("Thank you");
+			notice("\nThank you. Have a good day!\n");
 			break;
 		default:
-			error("Enter Valid Option");
+			error("\nEnter Valid Option\n");
 			break;
 	}
-	if(option==4)
+	if(option==FIVE)
 		break;
 	}
 
 }
 int Menu::SearchInMenu()
 {
-	int ans=-1;
+	int ans=-ONE;
      string searchitem;
-	    info("Enter your favorite dish: ");
+	    info("\nEnter your favorite dish: ");
     cin >> searchitem;
     /*To make string in lower case*/
     transform(searchitem.begin(), searchitem.end(), searchitem.begin(), ::tolower);
 
-    /*To remove any white spaces*/	
-    searchitem.erase(remove(searchitem.begin(),searchitem.end(),' '), searchitem.end());
-    
     /*To capitalize first letter*/
-    searchitem[0] = toupper(searchitem[0]);
-    for(int i=0;i<ItemsCount;i++)
+    searchitem[ZERO] = toupper(searchitem[ZERO]);
+    for(int i=ZERO;i<ItemsCount;i++)
     {
         if(items[i].Name==searchitem)
         {
@@ -338,15 +381,15 @@ int Menu::SearchInMenu()
             break;
         }
     }
-    if(ans!=-1){
+    if(ans!=-ONE){
     info("VOILA!\n");
     cout<< searchitem ;
     info(" is present at line  number ");
-    cout<<ans+1<<endl;
-    cout << "Enter " << ans+1 << " to add " << searchitem << " to your cart in order menu" << endl;
+    cout<<ans+ONE<<endl;
+    info("Enter "); cout << ans+ONE; info(" to add "); cout << searchitem; info(" to your cart in order menu\n");
     }
     else {
-    cout<<"The Menu Item "<<searchitem<<" is not found"<<endl;
+    info("The Menu Item "); cout<<searchitem; info(" is not found\n");
     }
     return 0;
 
@@ -356,11 +399,16 @@ void Menu::FeedbackForManagement(){
         while(true)
         {
 		cout<<endl;
-        info("\nGIVE A FEEDBACK");
+        info("\nPLEASE PROVIDE YOUR FEEDBACK");
 
         int fchoice;
         notice("\n1. POOR\n2. AVERAGE\n3. GOOD\n4. EXCELLENT\n5. Exit\n");
-        cin>>fchoice;
+        while(cout << "\nEnter your choice: " && !(cin>>fchoice)){
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                error("\nEnter Valid Option\n");
+        }
+	//cin>>fchoice;
         switch(fchoice)
         {
                 case 1:
@@ -372,23 +420,23 @@ void Menu::FeedbackForManagement(){
 
                         break;
                 case 3:
-                       info("THANK YOU.... VISIT AGAIN \n");
+                       info("THANK YOU. WE ARE GLAD YOU ENJOYED OUR SERVICE!\n");
                         break;
                 case 4:
-                        info("THANK YOU SO MUCH.. HOPE YOU ARE ENJOYING..... VISIT AGAIN \n");
+                        info("THANK YOU. WE ARE GLAD YOU ENJOYED OUR SERVICE!\n");
                         break;
                 case 5:
-                        info("THANK YOU\n");
+                        info("THANK YOU.\n");
                         break;
                 default:
                         error("Enter Valid Option\n");
                         break;
         }
-        if(fchoice>0 && fchoice<=5)
+        if(fchoice>ZERO && fchoice<=FIVE)
                 break;
         }
 
-        notice("THANK YOU FOR CHOOSING US\n");
+        notice("GOODBYE! SEE YOU AGAIN SOON!\n");
 
 }
 

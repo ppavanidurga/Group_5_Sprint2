@@ -11,20 +11,17 @@ Users::Users()
 {
 	ifstream infile;
 	infile.open("login.txt");
-	int userNo=0;
-	//cout<<"constructor called"<<endl;
+	int userNo=ZERO;
 	while(!infile.eof())
 	{
 	    User usr;
 	    infile >>usr.UserName;
 	    infile >>usr.Password;
-	    int isadminflag=0;
+	    int isadminflag = ZERO;
 	    infile>>isadminflag;
-	    usr.IsAdmin= isadminflag>0 ? true:false;
+	    usr.IsAdmin= isadminflag > ZERO ? true:false;
 	    users[userNo]=usr;
 	    userNo++;
-	    // cout<<usr.UserName<<endl;
-	    // cout<<usr.Password<<endl;
 	}
 	infile.close();
 	UsersCount=userNo;
@@ -35,8 +32,8 @@ Users::Users()
 bool Users::Login(string username,string password)
 {
 	bool isLogin=false;
-	int userNo=0;
-	for(userNo=0;userNo<UsersCount;userNo++)
+	int userNo=ZERO;
+	for(userNo=ZERO;userNo<UsersCount;userNo++)
 	{
 		if(users[userNo].UserName==username && users[userNo].Password == password)
 		{
@@ -54,15 +51,27 @@ bool Users::Login(string username,string password)
 void Users::SignUp()
 {
 	string username,password,address;
-	string phonenumber;
-        info("Choose username :");
+        info("\nChoose username :");
         cin>>username;
         info("\nChoose password :");
         cin>>password;
         info("\nEnter Address :");
         cin>>address;
-        info("\nEnter phoneNumber :");
-	cin>>phonenumber;
+
+	double phoneNumber;
+	phone_num:
+	info("\nEnter Phone number No : ");
+	while ( !(cin >> phoneNumber) )
+	{
+    		fflush(stdin);
+    		error("\nInvalid Phone number\n");
+    		info("\nEnter Phone number again : ");
+	}
+	if (phoneNumber < MINPH || phoneNumber > MAXPH)
+	{
+   		error("\nPlease enter valid phone number!\n");
+   		goto phone_num;
+	}
 	ofstream outfile;
         outfile.open("login.txt",ios::app);
 	outfile<<"\n";
@@ -78,16 +87,16 @@ void Users::SignUp()
 	usr.IsAdmin=false;
 	users[UsersCount]=usr;
         UsersCount++;
-	notice("****Sign Up successful****");
+	notice("\n****Sign Up successful****\n");
 }
 
 void Users::LoginWithRetrys()
 {
-	int retry=ones;
+	int retry = ONE;
         LoginSuccess=false;
-        while(retry<=thrice){
+        while(retry <= THREE){
         string username,password;
-        notice("Please enter your login details");
+        notice("\nPlease enter your login details\n");
         info("\nEnter Username: ");
         cin>>username;
         info("\nEnter password : ");
@@ -97,19 +106,19 @@ void Users::LoginWithRetrys()
                 LoginSuccess=true;
                 break;
         }
-        warning("WARNING!!! Invalid password,Please re-enter the password");
+        warning("\nWARNING!!! Invalid password, Please re-enter the password\n");
         retry++;
-        if(retry==four)
+        if(retry==FOUR)
         {
-                error("\nOOPS!! Maximum retry limit reached,Wait for 30 sec to retry");
-                sleep(sec);
-                retry=ones;
+                error("\nOOPS!! Maximum retry limit reached, Wait for 30 sec to retry\n");
+                sleep(SEC);
+                retry=ONE;
         }
         }
         if(LoginSuccess)
         {
                 if(IsAdmin)
-         notice("Admin login successful with Username");
+         notice("Admin login successful with Username\n");
                 else
           notice("Login successful with Username\n");
 

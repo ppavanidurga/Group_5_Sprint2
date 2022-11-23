@@ -6,6 +6,8 @@
 #include "location.h"
 #include "server_client.h"
 #include "Logger.h"
+
+#define ZERO 0
 using namespace std;
 
 /*Function to display available locations*/
@@ -79,13 +81,15 @@ bool Location::get_restaurants(string appended_user_location) {
     }
     else if(INFile_hotel_list){
         int restaurant_no;
-        while(cout<< "Select your Hotel number: " && !(cin >> restaurant_no)){
+	info("\nSelect your Hotel number: ");
+        while(!(cin >> restaurant_no)){
 		cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 error("Enter Valid Option\n");
+		info("\nSelect your Hotel number: ");
 	}
 
-	int read_lines = 0;
+	int read_lines = ZERO;
 	//int line_number= stoi(restaurant_no);
 	string line;
          while (getline(INFile_hotel_list, line)){
@@ -131,6 +135,6 @@ int Location::Location_transition()
     		break;
    		}
 	}     
-    return 0;
+    return ZERO;
 }
 

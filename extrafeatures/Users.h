@@ -1,8 +1,11 @@
-#define ones 1
-#define thrice 3
-#define maxusers 100
-#define four 4
-#define sec 30
+#define ZERO 0
+#define ONE 1
+#define THREE 3
+#define MAXUSERS 100
+#define FOUR 4
+#define SEC 30
+#define MINPH 1000000000
+#define MAXPH 9999999999
 
 using namespace std;
 class User
@@ -18,8 +21,8 @@ public:
 	bool IsAdmin=false;
 	bool LoginSuccess=false;
 	string UserName;
-	User users[maxusers];
-	int UsersCount=0;
+	User users[MAXUSERS];
+	int UsersCount=ZERO;
 	Users();
         bool Login(string username,string password);
 	void SignUp();

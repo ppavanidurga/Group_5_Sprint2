@@ -1,7 +1,8 @@
 
-Pizza	150
-Biryani	250
-Friedrice	200
-Icecream	40
-Vadapav	20
+Parota	30
 Sandwich	50
+Milkshake	60
+Juice	70
+Burger	150
+Pizza	250
+Vadapav	20

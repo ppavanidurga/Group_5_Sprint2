@@ -10,7 +10,7 @@ int main()
 {
    
 	Users users;
-	int loginOption=1;
+	int loginOption=ONE;
         //cout<< "\t\t\t***********************************************\n";
 	//cout<< "\t\t\t|           Welcome to                        |\n";
 	//cout<< "\t\t\t|    Online Food Ordering System              |\n";
@@ -23,7 +23,7 @@ int main()
 
 	//notice("\t\t\tWELCOME TO ONLINE FOOD ORDERING SYSTEM");
 	cout<<"\n1. Login" << endl << "2. Sign Up "<<endl << "3. Customer Support"<<endl;
-	notice("Select option: \n");
+	notice("\nSelect option: ");
 	cin>>loginOption;
 	switch(loginOption)
 	{
@@ -37,11 +37,11 @@ int main()
 		case 3:
 			Customer customer;
 			customer.customerSupport();
-			cout<<"Thanks Visit Again"<<endl;
+			cout<<"\nWe hope your issues are resolved!\nThank You Visit Again\n"<<endl;
 			exit(1);
 
 		default:
-			error("Invalid Option");
+			error("\nInvalid Option\n");
 			break;
 
 
@@ -62,9 +62,10 @@ int main()
 			
 		    Menu menu_obj;
 		    menu_obj.UserTransistion();
+                    menu_obj.FeedbackForManagement();
 		}
-		Menu menu_obj;
-                menu_obj.FeedbackForManagement();
+		/*Menu menu_obj;
+                menu_obj.FeedbackForManagement();*/
 
 	}
 	

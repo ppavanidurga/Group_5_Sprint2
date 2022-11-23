@@ -1,3 +1,4 @@
+admin admin 1
 sailakshmi 12345 1
 bhanu 34567 0
 pawani pawani123 1
@@ -11,3 +12,7 @@ murthy	murthy	0
 qwerty	qwerty!@	0
 divya	divya	0
 vani	vani	0
+customerID	customerPass	0
+customer	customer	0
+varadaraj	varadaraj	0
+kohli	kohli	0
