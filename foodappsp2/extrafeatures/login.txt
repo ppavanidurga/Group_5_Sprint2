@@ -1,0 +1,13 @@
+sailakshmi 12345 1
+bhanu 34567 0
+pawani pawani123 1
+
+ravi	ravi1234	0
+trim	trim1234	0
+divya	divya1235	0
+ratri	ratri	0
+ratri1	ratri1	0
+murthy	murthy	0
+qwerty	qwerty!@	0
+divya	divya	0
+vani	vani	0
