@@ -7,7 +7,9 @@
 #include <arpa/inet.h> 
 #include<ctype.h>
 #include<iostream>
-
+#define MAX 1024
+#define ZERO 0
+#define ONE 1
 #define PORT 8080
 class Customer {
 	public:
