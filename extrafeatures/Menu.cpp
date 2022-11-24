@@ -373,11 +373,11 @@ int Menu::SearchInMenu()
 
     /*To capitalize first letter*/
     searchitem[ZERO] = toupper(searchitem[ZERO]);
-    for(int i=ZERO;i<ItemsCount;i++)
+    for(int index=ZERO;index<ItemsCount;index++)
     {
-        if(items[i].Name==searchitem)
+        if(items[index].Name==searchitem)
         {
-            ans=i;
+            ans=index;
             break;
         }
     }
