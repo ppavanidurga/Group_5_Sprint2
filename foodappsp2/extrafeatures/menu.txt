@@ -1,7 +1,0 @@
-
-Pizza	150
-Biryani	250
-Friedrice	200
-Icecream	40
-Vadapav	20
-Sandwich	50
