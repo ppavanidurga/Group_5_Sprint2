@@ -1,0 +1,9 @@
+
+Parota	35
+Sandwich	50
+Milkshake	60
+Juice	70
+Burger	150
+Pizza	250
+Vadapav	20
+Dosa	30
