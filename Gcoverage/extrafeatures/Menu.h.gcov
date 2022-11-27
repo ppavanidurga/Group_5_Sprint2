@@ -1,0 +1,45 @@
+        -:    0:Source:Menu.h
+        -:    0:Programs:6
+        -:    1:#define ZERO 0
+        -:    2:#define ONE 1
+        -:    3:#define TWO 2
+        -:    4:#define THREE 3
+        -:    5:#define FOUR 4
+        -:    6:#define FIVE 5
+        -:    7:#define HUND 100
+        -:    8:
+        -:    9:using namespace std;
+     2374:   10:class MenuItem
+        -:   11:{
+        -:   12:        public:
+        -:   13:          string Name;
+        -:   14:          int Price;
+        -:   15:};
+     2110:   16:class CartItem
+        -:   17:{
+        -:   18:	public:
+        -:   19:	  string Name;
+        -:   20:	  int Qty;
+        -:   21:	  int Price;
+        -:   22:};
+       10:   23:class Menu
+        -:   24:{
+        -:   25:public:
+        -:   26:	bool IsAdmin=false;
+        -:   27:	MenuItem items[HUND];
+        -:   28:	CartItem cartItems[HUND];
+        -:   29:	int cartItemsCount=ZERO;
+        -:   30:	int ItemsCount=ZERO;
+        -:   31:	Menu();
+        -:   32:        void AddItemToCart();
+        -:   33:	void DeleteItemToCart();
+        -:   34:	void UpdateMenu();
+        -:   35:	void AddMenu();
+        -:   36:	void DeleteMenu();
+        -:   37:	void UserTransistion();
+        -:   38:	void AdminTransistion();
+        -:   39:	void FeedbackForManagement();
+        -:   40:	int SearchInMenu();
+        -:   41:
+        -:   42:};
+        -:   43:

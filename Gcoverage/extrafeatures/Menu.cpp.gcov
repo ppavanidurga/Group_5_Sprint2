@@ -1,0 +1,444 @@
+        -:    0:Source:Menu.cpp
+        -:    0:Programs:6
+        -:    1:#include <bits/stdc++.h>
+        -:    2:#include <string>
+        -:    3:#include<iostream>
+        -:    4:#include <ctype.h>
+        -:    5:#include "Menu.h"
+        -:    6:#include "server_client.h"
+        -:    7:#include<fstream>
+        -:    8:#include<unistd.h>
+        -:    9:#include "Logger.h"
+        -:   10:
+        -:   11:using namespace std;
+        -:   12:
+        -:   13:
+       11:   14:Menu::Menu()
+        -:   15:{
+       22:   16:	ifstream infile;
+       11:   17:	infile.open("menu.txt");
+       11:   18:	int itemindex=ZERO;
+      187:   19:	while(!infile.eof())
+        -:   20:	{
+      176:   21:	    MenuItem menuItem;
+       88:   22:	    infile >>menuItem.Name;
+       88:   23:	    infile >>menuItem.Price;
+       88:   24:	    items[itemindex]=menuItem;
+       88:   25:	    itemindex++;
+        -:   26:	}
+       11:   27:	infile.close();
+       11:   28:	ItemsCount=itemindex;
+        -:   29:
+        -:   30:
+       11:   31:}
+        4:   32:void Menu::AddItemToCart()
+        -:   33:{
+        -:   34:	int index;
+        4:   35:	info("\nEnter Menu Item Number: ");
+        -:   36:	//cin>>index;
+        8:   37:	while(!(cin>>index)){
+        2:   38:                cin.clear();
+        2:   39:                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        2:   40:                error("\nEnter Valid Option\n");
+        2:   41:		info("\nEnter Menu Item Number: ");
+        -:   42:                }
+        -:   43:
+        4:   44:	index--;
+        4:   45:	if(index>=ItemsCount)
+        -:   46:	
+        -:   47:	{
+        1:   48:		error("Invalid Menu Item Number\n");
+        1:   49:		return;
+        -:   50:	}
+        6:   51:	CartItem cartItem;
+        3:   52:	cartItem.Name=items[index].Name;
+        3:   53:	cartItem.Price=items[index].Price;
+        3:   54:	info("\nEnter Quantity of Your Item: ");
+        -:   55:	//cout<<cartItem.Name<<endl;
+        5:   56:	while(!(cin>>cartItem.Qty)){
+        1:   57:                cin.clear();
+        1:   58:                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        1:   59:                error("\nEnter Valid Option\n");
+        1:   60:		info("\nEnter Quantity of Your Item: ");
+        -:   61:                }
+        -:   62:
+        -:   63:	//cin>>cartItem.Qty;
+        3:   64:	cartItems[cartItemsCount]=cartItem;
+        3:   65:	cartItemsCount++; 
+        3:   66:	notice("\nItem Ordered Successfully\n");
+        -:   67:
+        -:   68:}
+        2:   69:void Menu::DeleteItemToCart()
+        -:   70:{
+        -:   71:        int index;
+        2:   72:        info("\nEnter Your Cart Item Number: ");
+        -:   73:        //cin>>index;
+        4:   74:	while(!(cin>>index)){
+        1:   75:                cin.clear();
+        1:   76:                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        1:   77:                error("\nEnter Valid Option\n");
+        1:   78:        	info("\nEnter Your Cart Item Number: ");
+        -:   79:                }
+        -:   80:
+        2:   81:        index--;
+        2:   82:        if(index>=cartItemsCount)
+        -:   83:        {
+        1:   84:                error("\nInvalid Cart Item Number\n");
+        1:   85:                return;
+        -:   86:        }
+        2:   87:        for(int cartitemindex=index;cartitemindex<cartItemsCount-ONE;cartitemindex++)
+        1:   88:		cartItems[cartitemindex]=cartItems[cartitemindex+ONE];
+        1:   89:        cartItemsCount--;
+        1:   90:        notice("\nItem removed from cart\n");
+        -:   91:
+        -:   92:}
+        -:   93:
+        9:   94:void Menu::UserTransistion()
+        -:   95:{
+        9:   96:	int outoption=ZERO;
+        -:   97:        while(true)
+        -:   98:        {
+       20:   99:        notice("\nMENU ITEMS\n");
+       20:  100:        int menuitemindex=ZERO;
+      340:  101:        while(menuitemindex<ItemsCount)
+        -:  102:        {
+      160:  103:                cout<<menuitemindex+ONE<<". "<<items[menuitemindex].Name<<"\t"<<items[menuitemindex].Price<<endl;
+      160:  104:                menuitemindex++;
+        -:  105:        }
+        -:  106:
+       20:  107:	notice("\nYour ordered Items\n");
+       20:  108:	int cartitemindex=ZERO;
+       20:  109:	int sum=ZERO;
+       32:  110:	while(cartitemindex<cartItemsCount)
+        -:  111:	{
+        6:  112:		int total = cartItems[cartitemindex].Qty*cartItems[cartitemindex].Price;
+        6:  113:		cout<<cartitemindex+ONE<<". "<<cartItems[cartitemindex].Name<<"\t"<<cartItems[cartitemindex].Qty<<"* "<<cartItems[cartitemindex].Price<<"\t"<< total  <<endl;
+        6:  114:                cartitemindex++;
+        6:  115:		sum+=total;
+        -:  116:	}
+       20:  117:	if(sum>ZERO)
+        -:  118:	{
+        5:  119:		info("\nTotal bill : ");
+        5:  120:		cout<<sum<<endl;
+        -:  121:	}
+       35:  122:        Menu:
+        -:  123:        int option;
+       20:  124:	info("\n1. Search Item\n2. Order Item\n3. Delete Item from Cart\n4. Pay Bill\n5. Cancel\n");
+       22:  125:        while(cout << "\nEnter your choice: " && !(cin>>option)){
+        1:  126:		cin.clear();
+        1:  127:		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        1:  128:		error("\nEnter Valid Option\n");
+        -:  129:		
+        -:  130:	}
+       20:  131:	switch(option)
+        -:  132:        {
+        2:  133:		case 1:
+        2:  134:			SearchInMenu();
+        2:  135:			break;
+        4:  136:                case 2:
+        4:  137:                        AddItemToCart();
+        4:  138:                        break;
+        2:  139:                case 3:
+        2:  140:                        DeleteItemToCart();
+        2:  141:                        break;
+        3:  142:                case 4:
+        -:  143:                        //DeleteMenu();
+        3:  144:			outoption=THREE;
+        3:  145:                        break;
+        6:  146:		case 5:
+        6:  147:			outoption=FOUR;
+        6:  148:			break;
+        3:  149:                default:
+        3:  150:			error("\nEnter Valid Option\n");
+        -:  151:                        
+        3:  152:                        break;
+        -:  153:        }
+        -:  154:	
+       20:  155:	if(outoption==THREE || outoption==FOUR)
+        -:  156:		break;
+        -:  157:        
+       11:  158:	}
+        -:  159:
+        9:  160:	if(outoption==THREE)
+        -:  161:	{
+        -:  162:		while(true){
+        5:  163:		info("\nPlease select payment option:");
+        5:  164:		info("\n1. GPay 2. PhonePe 3. Cash On Delivery 4. Others (Credit /Debit card) 5. Customer Support\n");
+        -:  165:		int pmethod;
+        -:  166:		//cin>>pmethod;
+        7:  167:		while(cout << "\nEnter your choice: " && !(cin>>pmethod)){
+        1:  168:                cin.clear();
+        1:  169:                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        1:  170:                error("\nEnter Valid Option\n");
+        -:  171:		}
+        5:  172:		if(pmethod == FIVE) {
+        -:  173:			Customer customer;
+        1:  174:			customer.customerSupport();
+        1:  175:			notice("Thank You Visit again\n");
+        1:  176:			exit(1);
+        -:  177:		}
+        -:  178:
+        4:  179:		if(pmethod>ZERO && pmethod<=FOUR)
+        -:  180:		{
+        2:  181:			notice("\nTransaction successful\n");
+        2:  182:			break;
+        -:  183:		}
+        -:  184:		else
+        2:  185:			error("\nInvalid Option try again\n");
+        -:  186:		
+        2:  187:		}
+        -:  188:
+        -:  189:
+        -:  190:	}
+        -:  191:
+        8:  192:}
+        -:  193:
+        -:  194:
+        2:  195:void Menu::AddMenu()
+        -:  196:{
+        4:  197:	MenuItem menuItem;
+        2:  198:	info("\nAdd Menu Item\n");
+        2:  199:	info("Enter new Item Name: ");
+        2:  200:	cin>>menuItem.Name;
+        2:  201:	info("\nEnter Price: ");
+        -:  202:	//cin>>menuItem.Price;
+        6:  203:	while(!(cin>>menuItem.Price)){
+        2:  204:                cin.clear();
+        2:  205:                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        2:  206:                error("\nEnter Valid Option\n");
+        2:  207:		info("\nEnter Price: ");
+        -:  208:                }
+        -:  209:
+        2:  210:	items[ItemsCount]=menuItem;
+        2:  211:	ItemsCount++;
+        4:  212:	ofstream outfile;
+        2:  213:        outfile.open("menu.txt",ios::app);
+        2:  214:        outfile<<"\n";
+        2:  215:        outfile<<menuItem.Name;
+        2:  216:        outfile<<"\t";
+        2:  217:        outfile<<menuItem.Price;
+        2:  218:        outfile<<"\t";
+        2:  219:        outfile<<"0";
+        2:  220:        outfile.close();
+        2:  221:	notice("\nNew Item Added to Menu Successfully\n");
+        -:  222:	
+        2:  223:}
+        -:  224:
+        3:  225:void Menu::DeleteMenu()
+        -:  226:{
+        -:  227:	int index;
+        3:  228:	info("\nEnter Menu Item Number to Delete: ");
+        -:  229:	//cin>>index;
+        5:  230:	while(!(cin>>index)){
+        1:  231:                cin.clear();
+        1:  232:                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        1:  233:                error("\nEnter Valid Option\n");
+        1:  234:		info("\nEnter Menu Item Number to Delete: ");
+        -:  235:                }
+        -:  236:
+        3:  237:	index--;
+        3:  238:	if(index>=ItemsCount)
+        -:  239:	{
+        1:  240:		error("\nInvalid Menu Item Number\n");
+        1:  241:		return;
+        -:  242:	}
+        2:  243:	int menuitemindex=ZERO;
+        3:  244:	for(menuitemindex=index;menuitemindex<ItemsCount-ONE;menuitemindex++)
+        -:  245:	{
+        1:  246:	   items[menuitemindex]=items[menuitemindex+ONE];
+        -:  247:	}
+        4:  248:	ofstream outfile;
+        2:  249:        outfile.open("menu.txt");
+        2:  250:        menuitemindex=ZERO;
+        2:  251:	ItemsCount--;
+       34:  252:        while(menuitemindex<ItemsCount)
+        -:  253:        {
+       16:  254:            outfile<<"\n";
+       16:  255:            outfile <<items[menuitemindex].Name;
+       16:  256:	    outfile<<"\t";
+       16:  257:            outfile <<items[menuitemindex].Price;
+       16:  258:	    menuitemindex++;
+        -:  259:            
+        -:  260:        }
+        2:  261:        outfile.close();
+        2:  262:        ItemsCount=menuitemindex;
+        -:  263:
+        -:  264:}
+        -:  265:
+        3:  266:void Menu::UpdateMenu()
+        -:  267:{
+        -:  268:        int index;
+        3:  269:        info("\nEnter Menu Item Number to Update : ");
+        5:  270:        while(!(cin>>index)){
+        1:  271:                cin.clear();
+        1:  272:                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        1:  273:                error("\nEnter Valid Option\n");
+        1:  274:        	info("\nEnter Menu Item Number to Update : ");
+        -:  275:                }
+        -:  276:
+        -:  277:	//cin>>index;
+        3:  278:        index--;
+        3:  279:        if(index>=ItemsCount)
+        -:  280:        {
+        2:  281:                error("\nInvalid Menu Item Number\n");
+        2:  282:                return;
+        -:  283:        }
+        1:  284:        int menuitemindex=ZERO;
+        -:  285:        
+        2:  286:	MenuItem item;
+        1:  287:	info("\nEnter Menu Item Name: ");
+        1:  288:	cin>>item.Name;
+        1:  289:	info("\nEnter Price: ");
+        -:  290:	//cin>>item.Price;
+        3:  291:	while(!(cin>>item.Price)){
+        1:  292:                cin.clear();
+        1:  293:                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        1:  294:                error("\nEnter Valid Option\n");
+        1:  295:		info("\nEnter Price: ");
+        -:  296:                }
+        -:  297:
+        1:  298:	items[index]=item;
+        -:  299:
+        2:  300:        ofstream outfile;
+        1:  301:        outfile.open("menu.txt");
+        1:  302:        menuitemindex=ZERO;
+       19:  303:        while(menuitemindex<ItemsCount)
+        -:  304:        {
+        9:  305:            outfile<<"\n";
+        9:  306:            outfile<<items[menuitemindex].Name;
+        9:  307:            outfile<<"\t";
+        9:  308:            outfile<<items[menuitemindex].Price;
+        9:  309:            menuitemindex++;
+        -:  310:
+        -:  311:        }
+        1:  312:        outfile.close();
+        1:  313:        ItemsCount=menuitemindex;
+        -:  314:}
+        -:  315:
+        -:  316:
+       15:  317:void Menu::AdminTransistion()
+        -:  318:{
+        -:  319:	while(true)
+        -:  320:	{
+       15:  321:	notice("\nMENU ITEMS\n");
+       15:  322:	int menuitemindex=ZERO;
+      265:  323:	while(menuitemindex<ItemsCount)
+        -:  324:	{
+      125:  325:		cout<<menuitemindex+ONE<<". "<<items[menuitemindex].Name<<"\t"<<items[menuitemindex].Price<<endl;
+      125:  326:		menuitemindex++;
+        -:  327:	}
+        -:  328:	
+        -:  329:	int option;
+       15:  330:	info("\n1. Search Item in menu\n2. Add Item to menu\n3. Update Menu Item\n4. Delete Menu Item\n5. Exit\n");
+        -:  331:	//cin>>option;
+       17:  332:	 while(cout << "\nEnter your choice: " && !(cin>>option)){
+        1:  333:                cin.clear();
+        1:  334:                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        1:  335:                error("\nEnter Valid Option\n");
+        -:  336:
+        -:  337:        }
+        -:  338:
+       15:  339:	switch(option)
+        -:  340:	{
+        2:  341:		case 1:
+        2:  342:			SearchInMenu();
+        2:  343:			break;
+        2:  344:		case 2:
+        2:  345:			AddMenu();
+        2:  346:			break;
+        3:  347:		case 3:
+        3:  348:			UpdateMenu();
+        3:  349:			break;
+        3:  350:		case 4:
+        3:  351:			DeleteMenu();
+        3:  352:			break;
+        2:  353:		case 5:
+        2:  354:			notice("\nThank you. Have a good day!\n");
+        2:  355:			break;
+        3:  356:		default:
+        3:  357:			error("\nEnter Valid Option\n");
+        3:  358:			break;
+        -:  359:	}
+       15:  360:	if(option==FIVE)
+        2:  361:		break;
+       13:  362:	}
+        -:  363:
+        2:  364:}
+        4:  365:int Menu::SearchInMenu()
+        -:  366:{
+        4:  367:	int ans=-ONE;
+        8:  368:     string searchitem;
+        4:  369:	    info("\nEnter your favorite dish: ");
+        4:  370:    cin >> searchitem;
+        -:  371:    /*To make string in lower case*/
+        4:  372:    transform(searchitem.begin(), searchitem.end(), searchitem.begin(), ::tolower);
+        -:  373:
+        -:  374:    /*To capitalize first letter*/
+        4:  375:    searchitem[ZERO] = toupper(searchitem[ZERO]);
+       21:  376:    for(int index=ZERO;index<ItemsCount;index++)
+        -:  377:    {
+       19:  378:        if(items[index].Name==searchitem)
+        -:  379:        {
+        2:  380:            ans=index;
+        2:  381:            break;
+        -:  382:        }
+        -:  383:    }
+        4:  384:    if(ans!=-ONE){
+        2:  385:    info("VOILA!\n");
+        2:  386:    cout<< searchitem ;
+        2:  387:    info(" is present at line  number ");
+        2:  388:    cout<<ans+ONE<<endl;
+        2:  389:    info("Enter "); cout << ans+ONE; info(" to add "); cout << searchitem; info(" to your cart in order menu\n");
+        -:  390:    }
+        -:  391:    else {
+        2:  392:    info("The Menu Item "); cout<<searchitem; info(" is not found\n");
+        -:  393:    }
+        8:  394:    return 0;
+        -:  395:
+        -:  396:}
+       10:  397:void Menu::FeedbackForManagement(){
+        -:  398:
+        -:  399:        while(true)
+        -:  400:        {
+       10:  401:		cout<<endl;
+       10:  402:        info("\nPLEASE PROVIDE YOUR FEEDBACK");
+        -:  403:
+        -:  404:        int fchoice;
+       10:  405:        notice("\n1. POOR\n2. AVERAGE\n3. GOOD\n4. EXCELLENT\n5. Exit\n");
+       12:  406:        while(cout << "\nEnter your choice: " && !(cin>>fchoice)){
+        1:  407:                cin.clear();
+        1:  408:                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        1:  409:                error("\nEnter Valid Option\n");
+        -:  410:        }
+        -:  411:	//cin>>fchoice;
+       10:  412:        switch(fchoice)
+        -:  413:        {
+        1:  414:                case 1:
+        1:  415:                         info("THANK YOU FOR THE FEEDBACK, WE WILL TRY TO IMPROVE OUR SERVICE\n");
+        -:  416:
+        1:  417:                        break;
+        1:  418:                case 2:
+        1:  419:                        info("THANK YOU FOR THE FEEDBACK, WE WILL TRY TO IMPROVE OUR SERVICE\n");
+        -:  420:
+        1:  421:                        break;
+        1:  422:                case 3:
+        1:  423:                       info("THANK YOU. WE ARE GLAD YOU ENJOYED OUR SERVICE!\n");
+        1:  424:                        break;
+        3:  425:                case 4:
+        3:  426:                        info("THANK YOU. WE ARE GLAD YOU ENJOYED OUR SERVICE!\n");
+        3:  427:                        break;
+        2:  428:                case 5:
+        2:  429:                        info("THANK YOU.\n");
+        2:  430:                        break;
+        2:  431:                default:
+        2:  432:                        error("Enter Valid Option\n");
+        2:  433:                        break;
+        -:  434:        }
+       10:  435:        if(fchoice>ZERO && fchoice<=FIVE)
+        8:  436:                break;
+        2:  437:        }
+        -:  438:
+        8:  439:        notice("GOODBYE! SEE YOU AGAIN SOON!\n");
+        -:  440:
+       59:  441:}
+        -:  442:
