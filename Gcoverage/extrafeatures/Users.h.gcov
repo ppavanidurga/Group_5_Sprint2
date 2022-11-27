@@ -1,0 +1,34 @@
+        -:    0:Source:Users.h
+        -:    0:Programs:6
+        -:    1:#define ZERO 0
+        -:    2:#define ONE 1
+        -:    3:#define THREE 3
+        -:    4:#define MAXUSERS 100
+        -:    5:#define FOUR 4
+        -:    6:#define SEC 30
+        -:    7:#define MINPH 1000000000
+        -:    8:#define MAXPH 9999999999
+        -:    9:
+        -:   10:using namespace std;
+     3763:   11:class User
+        -:   12:{
+        -:   13:        public:
+        -:   14:          string UserName;
+        -:   15:          string Password;
+        -:   16:          bool IsAdmin;
+        -:   17:};
+       11:   18:class Users
+        -:   19:{
+        -:   20:public:
+        -:   21:	bool IsAdmin=false;
+        -:   22:	bool LoginSuccess=false;
+        -:   23:	string UserName;
+        -:   24:	User users[MAXUSERS];
+        -:   25:	int UsersCount=ZERO;
+        -:   26:	Users();
+        -:   27:        bool Login(string username,string password);
+        -:   28:	void SignUp();
+        -:   29:	void LoginWithRetrys();
+        -:   30:
+        -:   31:};
+        -:   32:
