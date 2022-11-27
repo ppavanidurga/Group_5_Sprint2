@@ -1,0 +1,142 @@
+        -:    0:Source:location.cpp
+        -:    0:Programs:6
+        -:    1:#include <bits/stdc++.h>
+        -:    2:#include <iostream>
+        -:    3:#include <fstream>
+        -:    4:#include <string>
+        -:    5:#include <sstream>
+        -:    6:#include "location.h"
+        -:    7:#include "server_client.h"
+        -:    8:#include "Logger.h"
+        -:    9:
+        -:   10:#define ZERO 0
+        -:   11:using namespace std;
+        -:   12:
+        -:   13:/*Function to display available locations*/
+        -:   14:
+       17:   15:void Location::display_location() {
+       34:   16:    ifstream INFile("location.txt");
+       34:   17:    string line;  
+        -:   18:    
+      153:   19:    while(! INFile.eof())
+        -:   20:    {
+       68:   21:        getline(INFile, line);
+       68:   22:        cout << line << endl;
+        -:   23:    }
+       17:   24:    INFile.close();
+       17:   25:}
+        -:   26:
+        -:   27:/*function to verify entered location*/
+        -:   28:
+       17:   29:bool Location::get_location(string user_location){
+       34:   30:    ifstream INFile("location.txt");
+       34:   31:    string to_find;
+       17:   32:    bool exists = false;
+       17:   33:    transform(user_location.begin(), user_location.end(), user_location.begin(), ::tolower);
+       67:   34:    while (getline(INFile,to_find)) {
+       36:   35:	    transform(to_find.begin(), to_find.end(), to_find.begin(), ::tolower);
+        -:   36:
+       36:   37:	 if(to_find == "- "+user_location)
+        -:   38:		{
+       11:   39:        	    exists = true;
+       11:   40:           	    break;
+        -:   41:        	}
+        -:   42:    	}
+        -:   43:   
+       17:   44:   	 if (exists) {
+       11:   45:      		info( "Displaying available Restaurants in ");
+       11:   46:	       cout<< user_location << endl; 
+        -:   47:   	 }
+        -:   48:    	else{
+        6:   49:		error("Please enter Valid Location");
+        -:   50:        	//cout << "Please enter valid Location" << endl;
+        -:   51:    	}
+       34:   52: 	return exists;
+        -:   53:}
+        -:   54:
+        -:   55:/*function to display the available Restaurants*/
+        -:   56:
+       11:   57:void Location::restaurant_list(string appended_user_location) {
+       22:   58:    ifstream INFile_hotel_list(appended_user_location);
+       22:   59:    string hotel_list;
+        -:   60:  
+       11:   61:    if (!INFile_hotel_list){
+    #####:   62:        return display_location();
+        -:   63:    }
+        -:   64:
+      113:   65:    while(! INFile_hotel_list.eof())
+        -:   66:    {
+       51:   67:        getline(INFile_hotel_list, hotel_list);
+       51:   68:        cout << hotel_list << endl;
+        -:   69:    }
+        -:   70:
+       11:   71:    INFile_hotel_list.close();
+        -:   72:    
+        -:   73:}
+        -:   74:
+       14:   75:bool Location::get_restaurants(string appended_user_location) {
+        -:   76:    
+       14:   77:    ifstream INFile_hotel_list(appended_user_location);
+        -:   78:
+       14:   79:    if (!INFile_hotel_list){
+    #####:   80:   	 return false;
+        -:   81:    }
+       14:   82:    else if(INFile_hotel_list){
+        -:   83:        int restaurant_no;
+       14:   84:	info("\nSelect your Hotel number: ");
+       20:   85:        while(!(cin >> restaurant_no)){
+        3:   86:		cin.clear();
+        3:   87:                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        3:   88:                error("Enter Valid Option\n");
+        3:   89:		info("\nSelect your Hotel number: ");
+        -:   90:	}
+        -:   91:
+       14:   92:	int read_lines = ZERO;
+        -:   93:	//int line_number= stoi(restaurant_no);
+       28:   94:	string line;
+       74:   95:         while (getline(INFile_hotel_list, line)){
+       41:   96:         	 read_lines++;
+        -:   97:
+       41:   98:            	if(read_lines == restaurant_no)
+        -:   99:            	{
+       11:  100:                	cout << line << endl;
+       11:  101:                	break;
+        -:  102:            	}
+        -:  103:        }
+        -:  104:
+        -:  105:    
+       14:  106:         INFile_hotel_list.close();
+       14:  107:	 if (read_lines < restaurant_no) {
+        3:  108:            error("Invalid Entry");
+        3:  109:            return false;
+        -:  110:         }
+        -:  111:    
+       11:  112:    return true;
+        -:  113:}
+    #####:  114:}
+        -:  115:
+       17:  116:int Location::Location_transition()
+        -:  117:{
+        -:  118:	while(true) 
+        -:  119:	{
+       17:  120:	   notice("\n---We are availble in the following Locations---\n");
+       17:  121:	   display_location();
+       23:  122:	   string user_location;
+        -:  123:    
+       17:  124:    	   info("Enter Your Location: ");
+       17:  125:           cin >> user_location;
+        -:  126:    
+       17:  127:           transform(user_location.begin(), user_location.end(), user_location.begin(), ::tolower);
+        -:  128:   
+       17:  129:   	if (get_location(user_location)){
+       22:  130:    		string appended_user_location;
+       11:  131:    		appended_user_location=user_location.append("_hotels.txt");
+        -:  132:    
+       11:  133:    		restaurant_list(appended_user_location);	
+       14:  134:    		while(!get_restaurants(appended_user_location));
+       11:  135:    		break;
+        -:  136:   		}
+        6:  137:	}     
+       11:  138:    return ZERO;
+       51:  139:}
+        -:  140:
