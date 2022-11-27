@@ -1,0 +1,130 @@
+        -:    0:Source:Users.cpp
+        -:    0:Programs:6
+        -:    1:#include<iostream>
+        -:    2:#include "Users.h"
+        -:    3:#include "Logger.h"
+        -:    4:#include<fstream>
+        -:    5:#include<unistd.h>
+        -:    6:
+        -:    7:using namespace std;
+        -:    8:
+        -:    9:
+       17:   10:Users::Users()
+        -:   11:{
+       34:   12:	ifstream infile;
+       17:   13:	infile.open("login.txt");
+       17:   14:	int userNo=ZERO;
+      657:   15:	while(!infile.eof())
+        -:   16:	{
+      640:   17:	    User usr;
+      320:   18:	    infile >>usr.UserName;
+      320:   19:	    infile >>usr.Password;
+      320:   20:	    int isadminflag = ZERO;
+      320:   21:	    infile>>isadminflag;
+      320:   22:	    usr.IsAdmin= isadminflag > ZERO ? true:false;
+      320:   23:	    users[userNo]=usr;
+      320:   24:	    userNo++;
+        -:   25:	}
+       17:   26:	infile.close();
+       17:   27:	UsersCount=userNo;
+        -:   28:
+        -:   29:
+       17:   30:}
+        -:   31:
+       14:   32:bool Users::Login(string username,string password)
+        -:   33:{
+       14:   34:	bool isLogin=false;
+       14:   35:	int userNo=ZERO;
+      136:   36:	for(userNo=ZERO;userNo<UsersCount;userNo++)
+        -:   37:	{
+      133:   38:		if(users[userNo].UserName==username && users[userNo].Password == password)
+        -:   39:		{
+       11:   40:		 isLogin=true;
+       11:   41:		 UserName=users[userNo].UserName;
+       11:   42:		 IsAdmin= users[userNo].IsAdmin;
+       11:   43:		 break;
+        -:   44:		}
+        -:   45:
+        -:   46:	}
+       14:   47:	if(userNo==UsersCount)
+        3:   48:		return false;
+       11:   49:	return true;
+        -:   50:}
+        1:   51:void Users::SignUp()
+        -:   52:{
+        2:   53:	string username,password,address;
+        1:   54:        info("\nChoose username :");
+        1:   55:        cin>>username;
+        1:   56:        info("\nChoose password :");
+        1:   57:        cin>>password;
+        1:   58:        info("\nEnter Address :");
+        1:   59:        cin>>address;
+        -:   60:
+        -:   61:	double phoneNumber;
+        2:   62:	phone_num:
+        2:   63:	info("\nEnter Phone number No : ");
+        2:   64:	while ( !(cin >> phoneNumber) )
+        -:   65:	{
+    #####:   66:    		fflush(stdin);
+    #####:   67:    		error("\nInvalid Phone number\n");
+    #####:   68:    		info("\nEnter Phone number again : ");
+        -:   69:	}
+        2:   70:	if (phoneNumber < MINPH || phoneNumber > MAXPH)
+        -:   71:	{
+        1:   72:   		error("\nPlease enter valid phone number!\n");
+        1:   73:   		goto phone_num;
+        -:   74:	}
+        2:   75:	ofstream outfile;
+        1:   76:        outfile.open("login.txt",ios::app);
+        1:   77:	outfile<<"\n";
+        1:   78:	outfile<<username;
+        1:   79:	outfile<<"\t";
+        1:   80:	outfile<<password;
+        1:   81:	outfile<<"\t";
+        1:   82:	outfile<<"0";
+        1:   83:        outfile.close();
+        2:   84:	User usr;
+        1:   85:        usr.UserName=username;
+        1:   86:        usr.Password=password;
+        1:   87:	usr.IsAdmin=false;
+        1:   88:	users[UsersCount]=usr;
+        1:   89:        UsersCount++;
+        1:   90:	notice("\n****Sign Up successful****\n");
+        1:   91:}
+        -:   92:
+       11:   93:void Users::LoginWithRetrys()
+        -:   94:{
+       11:   95:	int retry = ONE;
+       11:   96:        LoginSuccess=false;
+       17:   97:        while(retry <= THREE){
+       17:   98:        string username,password;
+       14:   99:        notice("\nPlease enter your login details\n");
+       14:  100:        info("\nEnter Username: ");
+       14:  101:        cin>>username;
+       14:  102:        info("\nEnter password : ");
+       14:  103:        cin>>password;
+       14:  104:        if(Login(username,password))
+        -:  105:        {
+       11:  106:                LoginSuccess=true;
+       11:  107:                break;
+        -:  108:        }
+        3:  109:        warning("\nWARNING!!! Invalid password, Please re-enter the password\n");
+        3:  110:        retry++;
+        3:  111:        if(retry==FOUR)
+        -:  112:        {
+        1:  113:                error("\nOOPS!! Maximum retry limit reached, Wait for 30 sec to retry\n");
+        1:  114:                sleep(SEC);
+        1:  115:                retry=ONE;
+        -:  116:        }
+        -:  117:        }
+       11:  118:        if(LoginSuccess)
+        -:  119:        {
+       11:  120:                if(IsAdmin)
+        2:  121:         notice("Admin login successful with Username\n");
+        -:  122:                else
+        9:  123:          notice("Login successful with Username\n");
+        -:  124:
+        -:  125:        }
+        -:  126:
+       62:  127:}
+        -:  128:
