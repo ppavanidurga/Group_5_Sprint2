@@ -1,0 +1,85 @@
+        -:    0:Source:server_socket.cpp
+        -:    0:Programs:0
+        -:    1:#include"server_client.h"
+        -:    2:#include<iostream>
+        -:    3:#include "Logger.h"
+        -:    4:using namespace std;
+    #####:    5:int main(int argc, char const* argv[])
+        -:    6:{
+        -:    7:    int server_fd, new_socket, valread;
+        -:    8:    struct sockaddr_in address;
+    #####:    9:    int opt = ONE;
+    #####:   10:    int addrlen = sizeof(address);
+    #####:   11:    char buffer[MAX] = { ZERO };
+        -:   12:   // char* hello = "Hello from server";
+        -:   13: 
+        -:   14:    
+    #####:   15:    if ((server_fd = socket(AF_INET, SOCK_STREAM, ZERO)) < ZERO) {
+    #####:   16:        error("socket failed");
+    #####:   17:        exit(EXIT_FAILURE);
+        -:   18:    }
+        -:   19: 
+        -:   20:    // Forcefully attaching socket to the port 8080
+    #####:   21:    if (setsockopt(server_fd, SOL_SOCKET,
+        -:   22:                   SO_REUSEADDR | SO_REUSEPORT, &opt,
+    #####:   23:                   sizeof(opt))) {
+    #####:   24:        error("setsockopt");
+    #####:   25:        exit(EXIT_FAILURE);
+        -:   26:    }
+    #####:   27:    address.sin_family = AF_INET;
+    #####:   28:   address.sin_addr.s_addr=inet_addr("10.0.2.15");
+        -:   29:    // address.sin_addr.s_addr = INADDR_ANY;
+    #####:   30:    address.sin_port = htons(PORT);
+        -:   31: 
+        -:   32:    // Forcefully attaching socket to the port 8080
+    #####:   33:    if (bind(server_fd, (struct sockaddr*)&address,
+        -:   34:             sizeof(address))
+    #####:   35:        < ZERO) {
+    #####:   36:        error("bind failed");
+    #####:   37:        exit(EXIT_FAILURE);
+        -:   38:    }
+        -:   39:   
+    #####:   40:    if (listen(server_fd, THREE) < ZERO) {
+    #####:   41:        error("listen");
+    #####:   42:        exit(EXIT_FAILURE);
+        -:   43:    }
+    #####:   44:client:
+    #####:   45:    if ((new_socket
+        -:   46:         = accept(server_fd, (struct sockaddr*)&address,
+        -:   47:                  (socklen_t*)&addrlen))
+    #####:   48:        < ZERO) {
+    #####:   49:        error("accept");
+    #####:   50:        exit(EXIT_FAILURE);
+        -:   51:    }
+        -:   52: 
+        -:   53:    while(ONE){
+    #####:   54:	     bzero(buffer,MAX);
+        -:   55:
+        -:   56:
+        -:   57:           // printf("\n:");
+        -:   58:           // fgets(buffer,1024,stdin);
+    #####:   59:            valread=read(new_socket,buffer,MAX);
+    #####:   60:            if(valread<ZERO)
+    #####:   61:                    perror("Error on reading");
+    #####:   62:	    notice("Customer Message :");
+    #####:   63:	    printf("%s\n",buffer);
+    #####:   64:            bzero(buffer,MAX);
+    #####:   65:	    info("Enter your msg :");
+        -:   66:	  // fgets(buffer,1024,stdin);
+    #####:   67:	   cin>>buffer;
+        -:   68:	  //cin.getline(buffer,MAX);
+    #####:   69:            valread = write(new_socket, buffer, strlen(buffer));
+    #####:   70:            if(valread<ZERO)
+    #####:   71:                    error("Error on Writing.");
+        -:   72:      
+        -:   73:
+    #####:   74:            if(strcmp("Welcome",buffer)==ZERO)
+    #####:   75:                   break;
+        -:   76:    }
+        -:   77:  
+    #####:   78:    close(new_socket);
+    #####:   79:    goto client;
+        -:   80: 
+        -:   81:    shutdown(server_fd, SHUT_RDWR);
+        -:   82:    return ZERO;
+    #####:   83:}
