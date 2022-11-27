@@ -1,0 +1,75 @@
+        -:    0:Source:client_socket.cpp
+        -:    0:Programs:6
+        -:    0:Source is newer than graph
+        -:    1:#include "server_client.h"
+        -:    2:/*#include <arpa/inet.h>
+        -:    3:#include <stdio.h>
+        -:    4:#include <string.h>
+        -:    5:#include <sys/socket.h>
+        -:    6:#include <unistd.h>
+        -:    7:#include<ctype.h>
+        -:    8:#define PORT 8080
+        -:    9:*/
+        -:   10:
+        -:   11:#include<iostream>
+        -:   12:#include "Logger.h"
+        -:   13:
+        -:   14:using namespace std;
+        -:   15:
+        6:   16:int Customer::customerSupport()
+        -:   17:{
+        6:   18:    int sock = ZERO, valread, client_fd;
+        -:   19:    struct sockaddr_in serv_addr;
+        -:   20:    //char* hello = "Hello from client";
+        6:   21:    char buffer[MAX] = { ZERO };
+        6:   22:    if ((sock = socket(AF_INET, SOCK_STREAM, ZERO)) < ZERO) {
+    #####:   23:        error("\n Socket creation error \n");
+    #####:   24:        return -ONE;
+        -:   25:    }
+        -:   26: 
+        6:   27:    serv_addr.sin_family = AF_INET;
+        6:   28:    serv_addr.sin_port = htons(PORT);
+        -:   29: 
+        -:   30:    // Convert IPv4 and IPv6 addresses from text to binary
+        -:   31:    // form
+       12:   32:    if (inet_pton(AF_INET, "10.0.2.15", &serv_addr.sin_addr)
+        6:   33:        <= ZERO) {
+    #####:   34:        error("\nInvalid address/ Address not supported \n");
+    #####:   35:        return -ONE;
+        -:   36:    }
+        -:   37: 
+        6:   38:    if ((client_fd
+        -:   39:         = connect(sock, (struct sockaddr*)&serv_addr,
+        -:   40:                   sizeof(serv_addr)))
+        6:   41:        < ZERO) {
+        2:   42:        error("\nConnection Failed \n");
+        2:   43:        return -ONE;
+        -:   44:    }
+        -:   45:    while(ONE){
+       11:   46:	    info("Enter your message: ");
+       11:   47:	    bzero(buffer,MAX);
+       11:   48:	   cin>>buffer;
+        -:   49:	   // fgets(buffer,1024,stdin);
+        -:   50:	   // cin.getline(buffer,1024);
+        -:   51:	    
+       11:   52:	    valread=write(sock,buffer,strlen(buffer));
+       11:   53:	    if(valread<ZERO)
+    #####:   54:		    error("Error on writing");
+       11:   55:	    bzero(buffer,MAX);
+       11:   56:	    valread = read(sock, buffer, MAX);
+       11:   57:	    if(valread<ZERO)
+    #####:   58:		    error("Error on reading.");
+       11:   59:	    notice("Server Message: ");
+       11:   60:	    printf("%s\n",buffer);
+        -:   61:
+       11:   62:	    int i=strcmp("Welcome",buffer);
+       11:   63:	    if(i==ZERO)
+        4:   64:		    break;
+        -:   65:	   // close(client_fd); 
+        7:   66:    }
+        -:   67:
+        -:   68:	
+        -:   69:    // closing the connected socket*/
+        4:   70:    close(client_fd);
+        4:   71:    return ZERO;
+       51:   72:}
